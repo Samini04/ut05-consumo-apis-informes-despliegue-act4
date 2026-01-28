@@ -1,0 +1,70 @@
+---
+id: DetailPage
+title: Ficha de Producto (<DetailPage />)
+sidebar_position: 2
+---
+
+# Página de Detalle (`<DetailPage />`)
+
+## Descripción General
+
+El componente `<DetailPage />` representa la **ficha técnica completa** de un producto.
+Es una **Smart Page**, responsable de la lógica de recuperación de datos según la navegación del usuario.
+
+:::tip Navegación Dinámica
+En la aplicación real, este componente usa `useParams` para leer la URL `/producto/:id`.
+:::
+
+---
+
+## 🎮 Demos Interactivas
+
+A continuación se muestran las historias reales renderizadas desde Storybook.
+
+### ✔️ Caso de Éxito (Visualización correcta)
+
+<div style={{border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', marginBottom: '2rem'}}>
+  <iframe
+    src="http://localhost:6006/iframe.html?args=&id=pages-detailpage--producto-existente&viewMode=story"
+    width="100%"
+    height="800px"
+    style={{border: 'none'}}
+    title="Detalle Producto Exito"
+  ></iframe>
+</div>
+
+### ❌ Gestión de Errores (404)
+
+<div style={{border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden', marginBottom: '2rem'}}>
+  <iframe
+    src="http://localhost:6006/iframe.html?args=&id=pages-detailpage--producto-no-encontrado&viewMode=story"
+    width="100%"
+    height="400px"
+    style={{border: 'none'}}
+    title="Detalle Producto Error"
+  ></iframe>
+</div>
+
+---
+
+## ⚙️ Arquitectura Técnica
+
+El componente real utiliza los siguientes Hooks de React:
+
+- **`useParams()`**: Extrae el `id` desde la URL.
+- **`useNavigate()`**: Permite la navegación programática (botón “Volver”).
+- **Lógica de búsqueda**: Recorre el dataset `productos.js` para encontrar coincidencias.
+
+---
+
+## 🛠️ Configuración de Ruta (Referencia)
+
+Para implementarlo en la aplicación real (`App.jsx`):
+
+```jsx
+import { Route, Routes } from 'react-router-dom';
+import DetailPage from './pages/DetailPage';
+
+<Routes>
+  <Route path="/producto/:id" element={<DetailPage />} />
+</Routes>
