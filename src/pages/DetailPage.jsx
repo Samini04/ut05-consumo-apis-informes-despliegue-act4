@@ -26,102 +26,46 @@
  * - Maneja la navegación de vuelta al catálogo.
  * - Muestra un mensaje de "Producto no encontrado" si el ID del producto no es válido.
  */
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { obtenerProductoPorId } from '../services/productoService';
+
+
 import "../assets/styles/index.css";
+import React from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useSingleProducto } from '../hooks/useProductos'; 
 
-export default function DetailPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();   
-  const [producto, setProducto] = useState(null);
-  const [loading, setLoading] = useState(true);
+const DetailPage = () => {
+    const { productoId } = useParams(); // Obtenemos el ID de la URL
+    
+    // Usamos el hook para obtener los datos, loading y error automáticamente
+    const { producto, loading, error } = useSingleProducto(productoId);
 
-  useEffect(() => {
-    obtenerProductoPorId(id).then(data => {
-      setProducto(data);
-      setLoading(false);
-    });
-  }, [id]);
+    if (loading) return <div className="text-center">Cargando detalle...</div>;
+    if (error) return <div className="text-center error">Error: {error}</div>;
+    if (!producto) return <div className="text-center">Producto no encontrado</div>;
 
-  if (loading) return <p>Cargando...</p>;
-
-  if (!producto) {
     return (
-      <section className="detail-notfound">
-        <h2>Producto no encontrado</h2>
-        <button onClick={() => navigate(-1)}>Volver al catálogo</button>
-      </section>
+        <div className="container detail-container">
+            <Link to="/productos" className="back-link">← Volver al catálogo</Link>
+            
+            <article className="detail-card">
+                <div className="detail-image">
+                    <img 
+                        src={producto.imagen} 
+                        alt={producto.nombre} 
+                        onError={(e) => e.target.src = 'https://via.placeholder.com/300'}
+                    />
+                </div>
+                <div className="detail-info">
+                    <h1>{producto.nombre}</h1>
+                    <span className="category-tag">{producto.categoria}</span>
+                    <p className="description">{producto.descripcion}</p>
+                    <p className="price">{producto.precio} €</p>
+                    
+                    <button className="btn-add">Añadir al Carrito</button>
+                </div>
+            </article>
+        </div>
     );
-  }
+};
 
-  return (
-    <article className="detail-container">
-      
-      <button onClick={() => navigate(-1)} className="detail-back">
-         ← Volver a la tienda
-      </button>
-
-      <div className="detail-card">
-        <div className="detail-image">
-          <img src={producto.imagen} alt={producto.nombre} />
-        </div>
-        {/*  Informaciones del producto*/}
-        <div className="detail-info">
-          <span className="detail-tag">Fresco y Natural</span>
-          <h1 className="detail-title">{producto.nombre}</h1>
-        {/*  Moneda */}
-          <div className="detail-price">
-            <div className="detail-current">{producto.precio}€</div>
-            <div className="detail-oldprice">
-              <span className="detail-strike">3.50€</span>
-              <span className="detail-discount">-20%</span>
-            </div>
-          </div>
-      {/*  Descripcion */}
-          <div className="detail-description">
-             <p>{producto.descripcion}</p>
-             <p>Origen seleccionado de los mejores cultivos. Calidad garantizada.</p>
-          </div>
-
-          <div className="detail-quantity">
-            <h3>Cantidad</h3>
-            <div className="detail-buttons">
-                <button>500g</button>
-                <button>1kg</button>
-                <button>A granel</button>
-            </div>
-          </div>
-
-          <div className="detail-size">
-            <h3>Tamaño</h3>
-            <div className="detail-buttons">
-                <button>Pequeño</button>
-                <button>Mediano</button>
-                <button>Grande</button>
-            </div>
-          </div>
-
-          <div className="detail-unit">
-             <span>Unidad</span>
-             <div className="detail-counter">
-                <button>−</button>
-                <div className="detail-count">1</div>
-                <button>+</button>
-             </div>
-          </div>
-      {/* Botones de acción accesibles */}
-          <div className="detail-actions">
-             <button aria-label="Favoritos">
-                <img src="/imagenes/corazon.png" alt="Icono Corazón" />
-             </button>
-             <button>Añadir al carrito</button>
-             <button>Comprar ahora</button>
-          </div>
-
-        </div>
-      </div>
-    </article>
-  );
-}
+export default DetailPage;

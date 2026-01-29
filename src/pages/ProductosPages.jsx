@@ -20,40 +20,36 @@
  * - `SearchBar`: Un componente utilizado para renderizar la barra de búsqueda para filtrar productos.
  * - `../assets/styles/index.css`: Hoja de estilos para el componente.
  */
-import { useState, useMemo, useEffect } from "react";
-import List from "../components/List";
-import SearchBar from "../components/SearchBar";
-import "../assets/styles/index.css";
-import { obtenerProductos } from "../services/productoService";
 
-export default function ProductosPage() {
-  const [productos, setProductos] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-// useMemo optimiza el filtrado: solo recalcula si cambia el término o la lista base
-  
-useEffect(() => {
-  obtenerProductos().then((data) => setProductos(data));
-}, []);
+import React, { useState } from 'react';
+import { useProductos } from '../hooks/useProductos'; // Importamos el nuevo hook
+import List from '../components/List';
+import SearchBar from '../components/SearchBar'; 
 
-const filteredProductos = useMemo(() => {
-    if (!searchTerm) return productos;
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    return productos.filter((p) => p.nombre.toLowerCase().includes(lowerCaseSearchTerm));
-  }, [searchTerm, productos]);
+const ProductosPage = () => {
+ 
+    const { data, loading, error } = useProductos(); 
+    const [searchTerm, setSearchTerm] = useState('');
+    
+    const productosFiltrados = data.filter(producto => 
+        producto.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-return (
-    <section>
-      <h1 className="layout-titulo">Lista de productos:</h1>
-      <SearchBar
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        placeholder="Buscar productos por nombre..."
-      />
-      {filteredProductos.length > 0 ? (
-        <List items={filteredProductos} />
-      ) : (
-        <p className="body-text text-center p-4">Cargando productos o no encontrados...</p>
-      )}
-    </section>
-  );
-}
+    if (loading) return <p className="text-center">Cargando catálogo...</p>;
+    if (error) return <p className="text-center error">Error: {error}</p>;
+
+    return (
+        <div className="container">
+            <h2>Catálogo de Productos</h2>
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            
+            {productosFiltrados.length > 0 ? (
+               <List lista={productosFiltrados} />
+            ) : (
+                <p>No se encontraron productos.</p>
+            )}
+        </div>
+    );
+};
+
+export default ProductosPage;
