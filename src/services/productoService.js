@@ -56,22 +56,32 @@ export const getProductById = async (id) => {
 /**
  * Crear un producto
  */
+/**
+ * Crear un producto
+ */
 export const createProduct = async (data) => {
   try {
-  // Aqui igual
+    // AQUÍ ESTABA EL PROBLEMA:
+    // Hacemos que funcione tanto si Admin.jsx envía 'name' como 'nombre'
     const payload = {
-        name: data.nombre, 
-        description: data.descripcion,
-        price: Number(data.precio),
-        category: data.categoria,
-        photo: data.imagen || ''
+        name: data.name || data.nombre, 
+        description: data.description || data.descripcion,
+        price: Number(data.price || data.precio),
+        category: data.category || data.categoria,
+        photo: data.photo || data.imagen || ''
     };
+
+    // Validación rápida antes de enviar para evitar el 400 del servidor
+    if (!payload.name || !payload.description || !payload.price) {
+        throw new Error("Faltan datos: Asegúrate de llenar nombre, descripción y precio.");
+    }
 
     const res = await axios.post(API_URL, payload);
     return res.data; 
 
   } catch (error) {
     console.error("Error al crear el producto:", error);
+    // Esto te mostrará el mensaje exacto del servidor en la alerta
     throw new Error(error.response?.data?.message || "No se pudo crear el producto.");
   }
 };
