@@ -81,12 +81,13 @@ const Admin = () => {
                     />
                 </div>
 
-                <div className="form-group">
+              <div className="form-group">
                     <label>Categoría:</label>
                     <select 
                         name="category" 
                         value={form.category} 
                         onChange={handleChange}
+                        style={{width: '100%', padding: '0.6rem', marginTop: '0.3rem', borderRadius: '0.5rem', border: '1px solid var(--color-grey-4)'}}
                     >
                         <option value="Zumos">Zumos</option>
                         <option value="Frutas">Frutas</option>

@@ -57,14 +57,10 @@ export const getProductById = async (id) => {
 
 /**
  * Crear un producto
- * Recibimos datos en formato React y los enviamos tal cual (tu backend espera name, price, etc)
- * OJO: Aquí hay que asegurar que enviamos los nombres que el backend quiere.
  */
 export const createProduct = async (productData) => {
   
   try {
-    
-    // Convertimos precio a número por seguridad
     const payload = {
     name: productData.nombre,
     description: productData.descripcion,
