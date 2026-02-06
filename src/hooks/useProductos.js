@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { getAllProducts, createProduct, getProductById } from "../services/productoService";
+import { getAllProducts, createProduct, getProductById, deleteProduct } from "../services/productoService";
 
 // ---------------------------------------------
 // Hook 1: Obtener lista de productos 
@@ -102,5 +102,5 @@ export const useSingleProducto = (id) => {
         fetchProducto();
     }, [id]);
 
-    return { producto, loading, error };
+    return { producto, loading, error,removeProducto };
 };
