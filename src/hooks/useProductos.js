@@ -22,7 +22,6 @@ export const useProductos = () => {
         setData(products);
       } catch (err) {
         setError(err.message);
-      
         setData([]); 
       } finally {
         setLoading(false);
@@ -33,14 +32,10 @@ export const useProductos = () => {
   }, []);
 
   const removeProducto = async (id) => {
- 
     if (!window.confirm("¿Estás seguro de que quieres eliminar este producto?")) return;
 
     try {
-        //  Llamar a la API
         await deleteProduct(id);
-        
-       
         setData((prevData) => prevData.filter((item) => item.id !== id));
         alert("Producto eliminado correctamente");
     } catch (err) {
@@ -48,7 +43,7 @@ export const useProductos = () => {
     }
   };
 
-  return { data, loading, error };
+  return { data, loading, error, removeProducto };
 };
 
 // ---------------------------------------------
@@ -76,7 +71,7 @@ export const useCreateProducto = () => {
 };
 
 // ---------------------------------------------
-// Hook 3: Obtener un solo producto 
+// Hook 3: Obtener un solo producto (Aquí sobraba removeProducto)
 // ---------------------------------------------
 export const useSingleProducto = (id) => {
     const [producto, setProducto] = useState(null);
@@ -84,7 +79,6 @@ export const useSingleProducto = (id) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Si no hay id, no hacemos nada
         if (!id) return;
 
         const fetchProducto = async () => {
@@ -102,5 +96,5 @@ export const useSingleProducto = (id) => {
         fetchProducto();
     }, [id]);
 
-    return { producto, loading, error,removeProducto };
+    return { producto, loading, error };
 };
