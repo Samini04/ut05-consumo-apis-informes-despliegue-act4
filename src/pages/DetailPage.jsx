@@ -28,49 +28,63 @@
  */
 
 
-import "../assets/styles/index.css";
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useSingleProducto } from '../hooks/useProductos'; 
+import { useSingleProducto } from '../hooks/useProductos';
+import "../assets/styles/index.css"; // Asegúrate de importar los estilos
 
 const DetailPage = () => {
-   
     const { id } = useParams(); 
-    
-
     const { producto, loading, error } = useSingleProducto(id);
 
-    if (loading) return <div className="text-center" style={{marginTop: '50px'}}>Cargando detalle...</div>;
-    if (error) return <div className="text-center error" style={{marginTop: '50px', color: 'red'}}>Error: {error}</div>;
-    if (!producto) return <div className="text-center" style={{marginTop: '50px'}}>Producto no encontrado</div>;
+    // Estados de carga y error con estilos inline simples para centrar
+    if (loading) return <div style={{textAlign: 'center', marginTop: '5rem'}}>Cargando...</div>;
+    if (error) return <div style={{textAlign: 'center', marginTop: '5rem', color: 'red'}}>Error: {error}</div>;
+    if (!producto) return <div style={{textAlign: 'center', marginTop: '5rem'}}>Producto no encontrado</div>;
 
     return (
-        <div className="container detail-container">
-            <Link to="/productos" className="back-link">← Volver al catálogo</Link>
-            
-            <article className="detail-card">
-                <div className="detail-image">
-                  
-                    <img 
-                        src={producto.imagen} 
-                        alt={producto.nombre} 
-                        onError={(e) => { 
-                            e.target.onerror = null; 
-                            e.target.src = 'https://via.placeholder.com/300'; 
-                        }}
-                    />
-                </div>
-                <div className="detail-info">
-                    <h1>{producto.nombre}</h1>
-                    <span className="category-tag">{producto.categoria}</span>
-                    <p className="description">{producto.descripcion}</p>
-                    <p className="price">{producto.precio} €</p>
-                    
-                    <div className="detail-actions">
-                        <button className="btn-add">Añadir al Carrito</button>
+        <div className="layout-main"> {/* Usamos layout-main para centrar y dar márgenes */}
+            <div className="detail-container">
+                
+                {/* 1. ENLACE ARREGLADO */}
+                <Link to="/productos" className="detail-back">
+                    <span>←</span> Volver al catálogo
+                </Link>
+                
+                <article className="detail-card">
+                    <div className="detail-image">
+                        <img 
+                            src={producto.imagen} 
+                            alt={producto.nombre} 
+                            onError={(e) => { 
+                                e.target.onerror = null; 
+                                e.target.src = 'https://via.placeholder.com/300'; 
+                            }}
+                        />
                     </div>
-                </div>
-            </article>
+                    
+                    <div className="detail-info">
+                        <h1 className="detail-title">{producto.nombre}</h1>
+                        
+                        <div style={{marginBottom: '1rem'}}>
+                            <span className="detail-discount">{producto.categoria}</span>
+                        </div>
+
+                        <p className="detail-description">{producto.descripcion}</p>
+                        
+                        <div className="detail-price">
+                            <span className="detail-current">{producto.precio} €</span>
+                        </div>
+                        
+                        <div className="detail-actions">
+                           
+                            <button className="btn-black">
+                                Añadir al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
         </div>
     );
 };

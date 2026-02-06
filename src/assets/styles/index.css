@@ -483,3 +483,53 @@ body {
   color: var(--color-white);
   text-decoration: underline;
 }
+
+.detail-back {
+  background: none;
+  border: none;
+  color: var(--color-grey-3);
+  margin-bottom: 1.5rem;
+  display: inline-flex; /* Para que la flecha y el texto se alineen */
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none; /* Quitamos el subrayado feo */
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.detail-back:hover {
+  color: var(--color-primary); /* Se pone verde al pasar el ratón */
+}
+
+/* ACCIONES (BOTONES) */
+.detail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+/* Estilo base para todos los botones de detalle */
+.detail-actions button {
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  flex: 1; /* Ocupan todo el ancho disponible */
+  transition: transform 0.1s;
+}
+
+.detail-actions button:active {
+  transform: scale(0.98);
+}
+
+/* CLASE ESPECÍFICA PARA EL CARRITO (NEGRO) */
+.btn-black {
+  background-color: var(--color-black-2);
+  color: var(--color-white);
+}
+
+.btn-black:hover {
+  opacity: 0.9;
+}
