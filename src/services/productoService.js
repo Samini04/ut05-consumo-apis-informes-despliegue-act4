@@ -1,9 +1,11 @@
 import axios from "axios";
 
 
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/productos`;
-//const API_URL = "http://localhost:5000/productos";
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+const API_URL = BASE_URL.endsWith('/productos') 
+  ? BASE_URL 
+  : `${BASE_URL}/productos`;
 
 const mapProductoFromAPI = (producto) => ({
   id: producto._id,
@@ -37,7 +39,7 @@ export const getAllProducts = async () => {
     }
 
   } catch (err) {
-    console.error("ERROR CRÍTICO:", err);
+    console.error("ERROR :", err);
     throw new Error("Error al obtener los productos: " + err.message);
   }
 };
