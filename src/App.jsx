@@ -4,12 +4,12 @@
  * Gestiona redirecciones y rutas comodín para errores 404.
  * * @component
  */
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Contenedor from './components/Contenedor';
 
 // Importación de páginas
 import HomePage from './pages/HomePage';
-import ProductosPage from "./pages/ProductosPages";
+import ProductosPage from "./pages/ProductosPages"; // Ojo, revisa si el archivo se llama Page o Pages
 import DetailPage from './pages/DetailPage';
 import ErrorPage from './pages/ErrorPage';
 import Admin from './pages/Admin';
@@ -23,17 +23,15 @@ function App() {
       <Route element={<Contenedor />}>
         <Route path='/' element={<HomePage />} />
         <Route path='/productos' element={<ProductosPage />} />
-        <Route path='/producto/:id' element={<DetailPage />} />
-        {/* Añade la ruta de Login aquí para que se vea dentro del diseño general */}
+        <Route path='/productos/:id' element={<DetailPage />} />
+        
         <Route path='/login' element={<LoginPage />} />
       </Route>
 
       {/* Rutas Privadas */}
       <Route path="/admin" element={<PrivateRoute />}>
-        {/* Contenedor envuelve también al Admin para mantener Header/Footer */}
         <Route element={<Contenedor />}>
           <Route index element={<Admin />} />
-          {/* Si usas subrutas, asegúrate que Admin tenga un <Outlet /> */}
           <Route path="formulario" element={<FormularioControlado />} />
         </Route>
       </Route>
