@@ -41,7 +41,10 @@ const ProductosPage = () => {
     return (
         <div className="container">
             <h2>Catálogo de Productos</h2>
-            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Corregido el paso de props */}
+            <SearchBar 
+                searchTerm={searchTerm} 
+                onSearchChange={setSearchTerm} 
+            />
             
             {productosFiltrados.length > 0 ? (
                 // 2. Pasamos la función onDelete a la lista
