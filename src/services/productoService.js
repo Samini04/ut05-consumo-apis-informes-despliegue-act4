@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/productos`;
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/productos`;
 //const API_URL = "http://localhost:5000/productos";
 
 
@@ -31,7 +31,6 @@ export const getAllProducts = async () => {
         return rawData.map(mapProductoFromAPI);
     } else {
         console.error(" Lo que llegó NO es un array:", rawData);
-        // Si el servidor nos devuelve un error, lanzamos el error para que el Hook se entere
         if (rawData.message) {
             throw new Error(rawData.message); 
         }
@@ -39,7 +38,7 @@ export const getAllProducts = async () => {
     }
 
   } catch (err) {
-    console.error("ERROR CRÍTICO:", err);
+    console.error("ERROR :", err);
     throw new Error("Error al obtener los productos: " + err.message);
   }
 };
