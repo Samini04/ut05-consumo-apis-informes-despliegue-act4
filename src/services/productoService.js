@@ -61,21 +61,39 @@ export const getProductById = async (id) => {
  * Crear un producto
  */
 export const createProduct = async (productData) => {
-  
   try {
+    // 1. Preparamos los datos para la API
+    // Como Admin.jsx ya usa claves en inglés (name, description...), las usamos directamente.
+    // Si alguna viene vacía, usamos un fallback para evitar el undefined.
     const payload = {
-    name: productData.nombre,
-    description: productData.descripcion,
-    price: Number(productData.precio),
-    category: productData.categoria,
-    photo: productData.imagen || ''
-  };
+        name: productData.name || productData.nombre, 
+        description: productData.description || productData.descripcion,
+        price: Number(productData.price || productData.precio),
+        category: productData.category || productData.categoria,
+        photo: productData.photo || productData.imagen || ''
+    };
 
+    // 2. Enviamos al servidor
     const res = await axios.post(API_URL, payload);
-    // Devolvemos el producto guardado ya mapeado
+    
+    // 3. Devolvemos la respuesta mapeada para que la lista la entienda
     const saved = res.data.savedProducto || res.data;
-    return mapProductoFromAPI(saved);
+    
+    // Aquí reutilizamos tu mapper para convertirlo a español si tu lista lo necesita así
+    return {
+        id: saved._id || saved.id,
+        nombre: saved.name,
+        descripcion: saved.description,
+        precio: saved.price,
+        categoria: saved.category,
+        imagen: saved.photo || ''
+    };
+
   } catch (err) {
+    // Si el error es 400, suele ser por validación (Faltan datos)
+    if (err.response && err.response.status === 400) {
+        throw new Error("Faltan datos obligatorios. Revisa que todos los campos tengan texto.");
+    }
     throw new Error("Error al guardar el producto: " + err.message);
   }
 };
