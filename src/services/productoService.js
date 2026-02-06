@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// Tu URL del backend (puerto 5000 según vimos antes)
+
 const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/productos`;
 //const API_URL = "http://localhost:5000/productos";
 
-// Función auxiliar para traducir de Mongo (_id, name) a React (id, nombre)
+
 const mapProductoFromAPI = (producto) => ({
   id: producto._id,
   nombre: producto.name,
@@ -19,19 +19,27 @@ const mapProductoFromAPI = (producto) => ({
  */
 export const getAllProducts = async () => {
   try {
+    console.log("Llamando a la API en:", API_URL); 
     const res = await axios.get(API_URL);
     
-    // Tu API devuelve { data: [...] } o a veces el array directo.
-    // Verificamos dónde está el array
+    console.log(" Respuesta cruda del servidor:", res.data); 
+
     const rawData = res.data.data || res.data;
 
-    // Si es un array, lo mapeamos. Si no, devolvemos vacío.
     if (Array.isArray(rawData)) {
+        console.log(" Es un array, mapeando productos...");
         return rawData.map(mapProductoFromAPI);
+    } else {
+        console.error(" Lo que llegó NO es un array:", rawData);
+        // Si el servidor nos devuelve un error, lanzamos el error para que el Hook se entere
+        if (rawData.message) {
+            throw new Error(rawData.message); 
+        }
+        return [];
     }
-    return [];
 
   } catch (err) {
+    console.error("ERROR CRÍTICO:", err);
     throw new Error("Error al obtener los productos: " + err.message);
   }
 };

@@ -1,49 +1,51 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
-/**
- * El componente Nav renderiza un menú de navegación responsivo con un botón
- * hamburguesa para alternar su visibilidad. Incluye enlaces a diferentes rutas
- * e íconos para el carrito y el perfil.
- *
- * @component
- * @example
- * return (
- *   <Nav />
- * )
- *
- * @returns {JSX.Element} El componente de navegación renderizado.
- */
+import { useState, useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom"; 
+import { UserContext } from "../context/UserContext";
+
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const { userLogged, login, logout } = useContext(UserContext); 
+  const navigate = useNavigate();
+
+  const handleLoginAction = () => {
+    login(); 
+    setOpen(false);
+    navigate("/admin"); 
+  };
+
+  const handleLogoutAction = () => {
+    logout();
+    setOpen(false);
+    navigate("/"); 
+  };
 
   return (
     <>
-      {/* Botón hamburguesa */}
       <button onClick={() => setOpen(!open)} className="nav-toggle">
         {open ? "✕" : "☰"}
       </button>
 
-      {/* Menú controlado por estado */}
       <nav className={`nav-menu ${open ? "nav-open" : ""}`}>
-        <ul className="nav-list">
+        <ul className="nav-list" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <li><NavLink to="/" onClick={() => setOpen(false)}>Inicio</NavLink></li>
+          <li><NavLink to="/productos" onClick={() => setOpen(false)}>Productos</NavLink></li>
+          
           <li>
-            <NavLink to="/"  onClick={() => setOpen(false)}>
-              Inicio
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/productos" onClick={() => setOpen(false)}>
-              Productos
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/admin" onClick={() => setOpen(false)}>
+            <NavLink to={userLogged ? "/admin" : "/login"} onClick={() => setOpen(false)}>
               Admin
             </NavLink>
           </li>
-          <li className="nav-icons">
-            <img src="/imagenes/carrito.png" alt="Carrito" width="40" height="40" />
-            <img src="/imagenes/perfil.png" alt="Perfil" width="40" height="40" />
+
+          <li>
+            {!userLogged ? (
+              <button onClick={handleLoginAction} className="nav-auth-btn">
+                Iniciar Sesión
+              </button>
+            ) : (
+              <button onClick={handleLogoutAction} className="nav-auth-btn">
+                Cerrar Sesión
+              </button>
+            )}
           </li>
         </ul>
       </nav>

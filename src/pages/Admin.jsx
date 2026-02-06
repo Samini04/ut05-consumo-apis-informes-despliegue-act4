@@ -25,7 +25,7 @@ const Admin = () => {
             alert('Producto creado con éxito');
             navigate('/productos');
         }
-        // Si falla, el 'error' del hook se actualizará y puedes mostrarlo abajo
+       
     };
     return (
         // 2. Usamos 'form-container' para que el CSS funcione

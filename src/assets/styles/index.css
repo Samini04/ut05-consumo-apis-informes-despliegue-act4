@@ -110,10 +110,6 @@ body {
   font-weight: 500;
 }
 
-.nav-icons {
-  display: flex;
-  gap: 1rem;
-}
 
 /* Escritorio */
 @media (min-width: 768px) {
@@ -132,6 +128,23 @@ body {
     flex-direction: row;
     gap: 2rem;
   }
+}
+
+.nav-auth-btn {
+  background: transparent;
+  border: 1px solid white; /* Un pequeño borde para que destaque como botón */
+  color: white;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-auth-btn:hover {
+  background: white;
+  color: #4a6741; /* El color verde de tu cabecera */
 }
 
 /* ========================================================= */
