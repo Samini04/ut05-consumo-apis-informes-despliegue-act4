@@ -34,8 +34,10 @@ import { useParams, Link } from 'react-router-dom';
 import { useSingleProducto } from '../hooks/useProductos'; 
 
 const DetailPage = () => {
-    const { id } = useParams();
    
+    const { id } = useParams(); 
+    
+
     const { producto, loading, error } = useSingleProducto(id);
 
     if (loading) return <div className="text-center" style={{marginTop: '50px'}}>Cargando detalle...</div>;
@@ -48,10 +50,10 @@ const DetailPage = () => {
             
             <article className="detail-card">
                 <div className="detail-image">
+                  
                     <img 
                         src={producto.imagen} 
                         alt={producto.nombre} 
-                        // CORRECCIÓN CRÍTICA AQUÍ PARA EVITAR PANTALLA BLANCA
                         onError={(e) => { 
                             e.target.onerror = null; 
                             e.target.src = 'https://via.placeholder.com/300'; 
