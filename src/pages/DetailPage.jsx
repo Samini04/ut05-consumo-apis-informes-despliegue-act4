@@ -31,7 +31,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSingleProducto } from '../hooks/useProductos';
-import "../assets/styles/index.css"; // Asegúrate de importar los estilos
+import "../assets/styles/index.css"; 
 
 const DetailPage = () => {
     const { id } = useParams(); 
@@ -78,7 +78,7 @@ const DetailPage = () => {
                         
                         <div className="detail-actions">
                            
-                            <button className="btn-black">
+                            <button className="product-actions">
                                 Añadir al Carrito
                             </button>
                         </div>
