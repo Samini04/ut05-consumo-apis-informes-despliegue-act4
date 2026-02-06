@@ -29,11 +29,15 @@ export default function List({ lista = [], onDelete }) {
 
         <li key={item.id}>
           <article className="product-card">
-            <figure>
+          <figure>
               <img 
                 src={item.imagen} 
                 alt={item.nombre} 
-                onError={(e) => { e.target.src = 'https://via.placeholder.com/150'; }}
+               
+                onError={(e) => { 
+                    e.target.onerror = null; 
+                    e.target.src = 'https://via.placeholder.com/150'; 
+                }}
               />
             </figure>
             <h3 className="product-name">{item.nombre}</h3>

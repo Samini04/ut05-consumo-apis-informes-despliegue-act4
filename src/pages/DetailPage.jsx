@@ -34,14 +34,13 @@ import { useParams, Link } from 'react-router-dom';
 import { useSingleProducto } from '../hooks/useProductos'; 
 
 const DetailPage = () => {
-    const { productoId } = useParams(); // Obtenemos el ID de la URL
-    
-    // Usamos el hook para obtener los datos, loading y error automáticamente
-    const { producto, loading, error } = useSingleProducto(productoId);
+    const { id } = useParams();
+   
+    const { producto, loading, error } = useSingleProducto(id);
 
-    if (loading) return <div className="text-center">Cargando detalle...</div>;
-    if (error) return <div className="text-center error">Error: {error}</div>;
-    if (!producto) return <div className="text-center">Producto no encontrado</div>;
+    if (loading) return <div className="text-center" style={{marginTop: '50px'}}>Cargando detalle...</div>;
+    if (error) return <div className="text-center error" style={{marginTop: '50px', color: 'red'}}>Error: {error}</div>;
+    if (!producto) return <div className="text-center" style={{marginTop: '50px'}}>Producto no encontrado</div>;
 
     return (
         <div className="container detail-container">
@@ -52,7 +51,11 @@ const DetailPage = () => {
                     <img 
                         src={producto.imagen} 
                         alt={producto.nombre} 
-                        onError={(e) => e.target.src = 'https://via.placeholder.com/300'}
+                        // CORRECCIÓN CRÍTICA AQUÍ PARA EVITAR PANTALLA BLANCA
+                        onError={(e) => { 
+                            e.target.onerror = null; 
+                            e.target.src = 'https://via.placeholder.com/300'; 
+                        }}
                     />
                 </div>
                 <div className="detail-info">
@@ -61,7 +64,9 @@ const DetailPage = () => {
                     <p className="description">{producto.descripcion}</p>
                     <p className="price">{producto.precio} €</p>
                     
-                    <button className="btn-add">Añadir al Carrito</button>
+                    <div className="detail-actions">
+                        <button className="btn-add">Añadir al Carrito</button>
+                    </div>
                 </div>
             </article>
         </div>

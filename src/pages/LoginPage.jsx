@@ -7,8 +7,8 @@ export default function LoginPage() {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        login(); // 1. Cambia el estado a logueado en el Context y LocalStorage
-        navigate('/admin'); // 2. Te mueve automáticamente a la ruta admin
+        login(); 
+        navigate('/admin'); 
     };
 
     return (
@@ -17,7 +17,7 @@ export default function LoginPage() {
             <p>Haz clic para entrar al panel de control.</p>
             <button 
                 onClick={handleLogin}
-                className="btn-login" 
+                className="product-actions" 
             >
                 Iniciar Sesión
             </button>
