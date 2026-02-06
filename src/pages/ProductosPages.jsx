@@ -27,7 +27,7 @@ import List from '../components/List';
 import SearchBar from '../components/SearchBar'; 
 
 const ProductosPage = () => {
-    // 1. Extraemos removeProducto del hook
+  
     const { data, loading, error, removeProducto } = useProductos(); 
     const [searchTerm, setSearchTerm] = useState('');
     
@@ -47,7 +47,7 @@ const ProductosPage = () => {
             />
             
             {productosFiltrados.length > 0 ? (
-                // 2. Pasamos la función onDelete a la lista
+                //  Pasamos la función onDelete a la lista
                 <List lista={productosFiltrados} onDelete={removeProducto} />
             ) : (
                 <p>No se encontraron productos.</p>
