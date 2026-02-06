@@ -22,13 +22,13 @@
  */
 
 import React, { useState } from 'react';
-import { useProductos } from '../hooks/useProductos'; // Importamos el nuevo hook
+import { useProductos } from '../hooks/useProductos'; 
 import List from '../components/List';
 import SearchBar from '../components/SearchBar'; 
 
 const ProductosPage = () => {
- 
-    const { data, loading, error } = useProductos(); 
+    // 1. Extraemos removeProducto del hook
+    const { data, loading, error, removeProducto } = useProductos(); 
     const [searchTerm, setSearchTerm] = useState('');
     
     const productosFiltrados = data.filter(producto => 
@@ -41,10 +41,11 @@ const ProductosPage = () => {
     return (
         <div className="container">
             <h2>Catálogo de Productos</h2>
-            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Corregido el paso de props */}
             
             {productosFiltrados.length > 0 ? (
-               <List lista={productosFiltrados} />
+                // 2. Pasamos la función onDelete a la lista
+                <List lista={productosFiltrados} onDelete={removeProducto} />
             ) : (
                 <p>No se encontraron productos.</p>
             )}

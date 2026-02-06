@@ -19,10 +19,8 @@
 import "../assets/styles/index.css";
 import { Link } from "react-router-dom";
 
-// IMPORTANTE: Cambiamos { items } por { lista } para coincidir con ProductosPage
-export default function List({ lista = [] }) {
+export default function List({ lista = [], onDelete }) {
   
-  // En caso que no haya productos en el array
   if (!lista || lista.length === 0) return <p>No hay productos disponibles.</p>;
 
   return (
@@ -40,12 +38,15 @@ export default function List({ lista = [] }) {
             </figure>
             <h3 className="product-name">{item.nombre}</h3>
             <p className="product-price">{item.precio} €</p>
-            <div className="product-actions">
             
-              <Link to={`/productos/${item.id}`} state={{ producto: item }}>
-                Ver detalle
+            <div className="product-actions">
+              <Link to={`/productos/${item.id}`}>
+                <button>Ver</button>
               </Link>
-              <button>Añadir +</button>
+              
+              {onDelete && (
+                  <button  className="btn-danger" onClick={() => onDelete(item.id)} > Borrar </button>
+              )}
             </div>
           </article>
         </li>
@@ -53,3 +54,4 @@ export default function List({ lista = [] }) {
     </ul>
   );
 }
+  

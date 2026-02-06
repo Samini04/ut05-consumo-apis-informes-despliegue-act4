@@ -235,6 +235,13 @@ body {
   padding: 0.5rem 1rem;
   border-radius: 99px;
 }
+.btn-danger {
+  background-color: var(--color-error) !important; 
+}
+
+.btn-danger:hover {
+  opacity: 0.8; 
+}
 /* ========================================================= */
 /* 4. DETALLE DE PRODUCTO (Interfaz Kiwi) */
 /* ========================================================= */

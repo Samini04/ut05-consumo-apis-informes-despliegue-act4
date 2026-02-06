@@ -9,7 +9,6 @@ export const useProductos = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Evitamos doble llamada en modo estricto (React 18)
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export const useProductos = () => {
         setData(products);
       } catch (err) {
         setError(err.message);
-        // En caso de error, aseguramos array vacío para que no explote el .map
+      
         setData([]); 
       } finally {
         setLoading(false);
@@ -32,6 +31,22 @@ export const useProductos = () => {
 
     fetchData();
   }, []);
+
+  const removeProducto = async (id) => {
+ 
+    if (!window.confirm("¿Estás seguro de que quieres eliminar este producto?")) return;
+
+    try {
+        //  Llamar a la API
+        await deleteProduct(id);
+        
+       
+        setData((prevData) => prevData.filter((item) => item.id !== id));
+        alert("Producto eliminado correctamente");
+    } catch (err) {
+        alert("Error al eliminar: " + err.message);
+    }
+  };
 
   return { data, loading, error };
 };
